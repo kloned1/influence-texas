@@ -4,6 +4,7 @@ services:
 
   oauth2:
     image: oauth2proxy:ssl
+    network_mode: "host"
     ports:
       - "443:443"
     volumes:
@@ -12,9 +13,6 @@ services:
       - "/etc/oauth2_proxy:/config:ro"
     entrypoint: ''
     command: oauth2_proxy -config /config/oauth2_proxy.cfg.django
-    environment:
-      OAUTH2_PROXY_PROVIDER: "Github"
-      OAUTH2_PROXY_GITHUB_ORG: "influencetx"
 
   django:
     build: .
@@ -22,3 +20,5 @@ services:
     network_mode: "host"
     ports:
       - "5120:5120"
+    environment:
+      - OPENSTATES_API_KEY=${OPENSTATES_API_KEY}
